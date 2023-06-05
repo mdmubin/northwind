@@ -1,5 +1,7 @@
+using Api.Data;
 using Api.Services;
 using Api.Services.Logging;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 
 // load log configuration
@@ -12,6 +14,12 @@ builder.Services.ConfigureCors();
 
 // adding logger to services
 builder.Services.AddSingleton<ILogService, LogService>();
+
+// Configuring DbContext
+builder.Services.AddDbContext<NorthwindContext>(opt =>
+{
+    opt.UseMySQL(builder.Configuration.GetConnectionString("DatabaseConnectionString")!);
+});
 
 builder.Services.AddControllers();
 
