@@ -1,4 +1,6 @@
-﻿namespace Api.Services;
+﻿using Api.Data.Repositories;
+
+namespace Api.Services;
 
 public static class ServiceConfigurations
 {
@@ -27,5 +29,14 @@ public static class ServiceConfigurations
             policy.AllowAnyHeader();
             policy.AllowAnyMethod();
         }));
+    }
+
+    /// <summary>
+    /// Configure the Data Repository settings for the project
+    /// </summary>
+    /// <param name="services">The WebApplicationBuilder's Service Collection</param>
+    public static void ConfigureDataRepository(this IServiceCollection services)
+    {
+        services.AddScoped<IRepositoryManager, RepositoryManager>();
     }
 }

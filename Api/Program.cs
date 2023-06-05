@@ -21,6 +21,8 @@ builder.Services.AddDbContext<NorthwindContext>(opt =>
     opt.UseMySQL(builder.Configuration.GetConnectionString("DatabaseConnectionString")!);
 });
 
+builder.Services.ConfigureDataRepository();
+
 builder.Services.AddControllers();
 
 if (builder.Environment.IsDevelopment())
