@@ -15,7 +15,7 @@ public static class ExceptionHandlerConfiguration
             {
                 context.Response.ContentType = MediaTypeNames.Application.Json;
 
-                var contextFeatures = context.Features.Get<ExceptionHandlerFeature>();
+                var contextFeatures = context.Features.Get<IExceptionHandlerFeature>();
                 if (contextFeatures != null)
                 {
                     context.Response.StatusCode = contextFeatures.Error switch
