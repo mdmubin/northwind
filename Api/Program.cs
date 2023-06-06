@@ -43,6 +43,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+var logger = app.Services.GetRequiredService<ILogService>();
+app.ConfigureErrorHandler(logger);
+
 // HTTP -> HTTPS
 // app.UseHttpsRedirection();
 
