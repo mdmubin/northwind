@@ -8,13 +8,13 @@ public class BaseRepository<T> : IRepository<T>
 {
     private readonly NorthwindContext _context;
 
-    public BaseRepository(NorthwindContext context)
+    protected BaseRepository(NorthwindContext context)
     {
         _context = context;
     }
 
 
-    public IQueryable<T> FindAll(bool trackChanges = false)
+    public IQueryable<T> FindAll(bool trackChanges)
     {
         return trackChanges ? _context.Set<T>() : _context.Set<T>().AsNoTracking();
     }

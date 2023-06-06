@@ -1,3 +1,4 @@
+using Api.Config;
 using Api.Data;
 using Api.Services;
 using Api.Services.Logging;
@@ -21,7 +22,9 @@ builder.Services.AddDbContext<NorthwindContext>(opt =>
     opt.UseMySQL(builder.Configuration.GetConnectionString("DatabaseConnectionString")!);
 });
 
-builder.Services.ConfigureDataRepository();
+builder.Services.ConfigureDataServices();
+
+builder.Services.AddAutoMapper(typeof(MappingProfileConfiguration));
 
 builder.Services.AddControllers();
 

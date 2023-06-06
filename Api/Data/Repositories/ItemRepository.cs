@@ -8,4 +8,17 @@ public class ItemRepository : BaseRepository<Item>
         : base(context)
     {
     }
+
+    public IEnumerable<Item> GetAllItems(bool trackChanges)
+    {
+        return FindAll(trackChanges)
+            .OrderBy(i => i.Name)
+            .ToList();
+    }
+
+    public Item GetItem(Guid id, bool trackChanges)
+    {
+        return FindByCondition(i => i.Id == id, trackChanges)
+            .SingleOrDefault();
+    }
 }

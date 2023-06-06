@@ -1,4 +1,5 @@
 ﻿using Api.Data.Repositories;
+using Api.Services.DataServices;
 
 namespace Api.Services;
 
@@ -32,11 +33,12 @@ public static class ServiceConfigurations
     }
 
     /// <summary>
-    /// Configure the Data Repository settings for the project
+    /// Configure the Data Repository settings, and the Data Service Manager for the project
     /// </summary>
     /// <param name="services">The WebApplicationBuilder's Service Collection</param>
-    public static void ConfigureDataRepository(this IServiceCollection services)
+    public static void ConfigureDataServices(this IServiceCollection services)
     {
         services.AddScoped<IRepositoryManager, RepositoryManager>();
+        services.AddScoped<IDataServiceManager, DataServiceManager>();
     }
 }
