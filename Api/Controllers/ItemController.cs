@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using Api.Models;
 using Api.Models.Dto;
 using Api.Models.ErrorModels;
 using Api.Models.Requests;
@@ -10,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Controllers;
 
 [ApiController]
-[Route("api/items")]
+[Route("api/items/")]
 public class ItemController : ControllerBase
 {
     private readonly ILogService _logger;
@@ -53,6 +52,11 @@ public class ItemController : ControllerBase
             throw new BadRequestError("Invalid request for item creation.");
         }
 
+        if (!ModelState.IsValid)
+        {
+            return UnprocessableEntity(ModelState);
+        }
+
         var itemResult = await _dataService.ItemService.CreateItemAsync(newItem);
 
         return CreatedAtAction(nameof(GetItemById), new { id = itemResult.Id }, itemResult);
@@ -66,6 +70,11 @@ public class ItemController : ControllerBase
         if (item == null)
         {
             throw new BadRequestError("Invalid request for item creation.");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return UnprocessableEntity(ModelState);
         }
 
         var update = await _dataService.ItemService.UpdateItem(id, item);
