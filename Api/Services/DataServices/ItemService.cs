@@ -20,16 +20,16 @@ public sealed class ItemService
         _mapper = mapper;
     }
 
-    public IEnumerable<ItemResultDto> GetAllItems(bool trackChanges = true)
+    public async Task<IEnumerable<ItemResultDto>> GetAllItemsAsync(bool trackChanges = true)
     {
-        var items = _repository.Items.GetAllItems(trackChanges);
+        var items = await _repository.Items.GetAllItemsAsync(trackChanges);
         var itemsResult = _mapper.Map<IEnumerable<ItemResultDto>>(items);
         return itemsResult;
     }
 
-    public ItemResultDto GetItem(Guid id, bool trackChanges = true)
+    public async Task<ItemResultDto> GetItemAsync(Guid id, bool trackChanges = true)
     {
-        var item = _repository.Items.GetItem(id, trackChanges);
+        var item = await _repository.Items.GetItemAsync(id, trackChanges);
         if (item == null)
         {
             throw new NotFoundError($"Item not found. No item with id = {id}");
@@ -39,21 +39,21 @@ public sealed class ItemService
         return itemResult;
     }
 
-    public ItemResultDto CreateItem(ItemRequestDto request)
+    public async Task<ItemResultDto> CreateItemAsync(ItemRequestDto request)
     {
         var newItem = _mapper.Map<Item>(request);
-        
+
         _repository.Items.Create(newItem);
-        _repository.SaveChangesAsync();
+        await _repository.SaveChangesAsync();
 
         var resItem = _mapper.Map<ItemResultDto>(newItem);
 
         return resItem;
     }
 
-    public ItemResultDto UpdateItem(Guid id, ItemUpdateDto update)
+    public async Task<ItemResultDto> UpdateItem(Guid id, ItemUpdateDto update)
     {
-        var item = _repository.Items.GetItem(id, true);
+        var item = await _repository.Items.GetItemAsync(id, true);
         if (item == null)
         {
             throw new NotFoundError($"Item not found. No item with id = {id}");
@@ -61,22 +61,22 @@ public sealed class ItemService
 
         _mapper.Map(update, item);
         _repository.Items.Update(item);
-        _repository.SaveChangesAsync();
+        await _repository.SaveChangesAsync();
 
         var resItem = _mapper.Map<ItemResultDto>(item);
 
         return resItem;
     }
 
-    public void DeleteItem(Guid id)
+    public async Task DeleteItem(Guid id)
     {
-        var item = _repository.Items.GetItem(id, true);
+        var item = await _repository.Items.GetItemAsync(id, true);
         if (item == null)
         {
             throw new NotFoundError($"Item not found. No item with id = {id}");
         }
 
         _repository.Items.Delete(item);
-        _repository.SaveChangesAsync();
+        await _repository.SaveChangesAsync();
     }
 }

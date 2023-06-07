@@ -1,4 +1,5 @@
 ﻿using Api.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Data.Repositories;
 
@@ -9,16 +10,16 @@ public class ItemRepository : BaseRepository<Item>
     {
     }
 
-    public IEnumerable<Item> GetAllItems(bool trackChanges)
+    public async Task<IEnumerable<Item>> GetAllItemsAsync(bool trackChanges)
     {
-        return FindAll(trackChanges)
+        return await FindAll(trackChanges)
             .OrderBy(i => i.Name)
-            .ToList();
+            .ToListAsync();
     }
 
-    public Item GetItem(Guid id, bool trackChanges)
+    public async Task<Item> GetItemAsync(Guid id, bool trackChanges)
     {
-        return FindByCondition(i => i.Id == id, trackChanges)
-            .SingleOrDefault();
+        return await FindByCondition(i => i.Id == id, trackChanges)
+            .SingleOrDefaultAsync();
     }
 }

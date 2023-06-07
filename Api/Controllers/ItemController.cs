@@ -23,32 +23,32 @@ public class ItemController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(List<ItemResultDto>), StatusCodes.Status200OK)]
-    public ActionResult GetItems()
+    public async Task<ActionResult> GetItems()
     {
-        var items = _dataService.ItemService.GetAllItems();
+        var items = await _dataService.ItemService.GetAllItemsAsync();
         return Ok(items);
     }
 
 
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(ItemResultDto), StatusCodes.Status200OK)]
-    public ActionResult GetItemById(Guid id)
+    public async Task<ActionResult> GetItemById(Guid id)
     {
-        var item = _dataService.ItemService.GetItem(id);
+        var item = await _dataService.ItemService.GetItemAsync(id);
         return Ok(item);
     }
 
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public ActionResult CreateItem(ItemRequestDto newItem)
+    public async Task<ActionResult> CreateItem(ItemRequestDto newItem)
     {
         if (newItem == null)
         {
             throw new BadRequestError("Invalid request for item creation.");
         }
 
-        var itemResult = _dataService.ItemService.CreateItem(newItem);
+        var itemResult = await _dataService.ItemService.CreateItemAsync(newItem);
 
         return CreatedAtAction(nameof(GetItemById), new { id = itemResult.Id }, itemResult);
     }
@@ -56,14 +56,14 @@ public class ItemController : ControllerBase
 
     [HttpPatch("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
-    public ActionResult UpdateItem(Guid id, ItemUpdateDto item)
+    public async Task<ActionResult> UpdateItem(Guid id, ItemUpdateDto item)
     {
         if (item == null)
         {
             throw new BadRequestError("Invalid request for item creation.");
         }
 
-        var update = _dataService.ItemService.UpdateItem(id, item);
+        var update = await _dataService.ItemService.UpdateItem(id, item);
 
         return AcceptedAtAction(nameof(GetItemById), new { id }, update);
     }
@@ -71,9 +71,9 @@ public class ItemController : ControllerBase
 
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public ActionResult DeleteItem(Guid id)
+    public async Task<ActionResult> DeleteItem(Guid id)
     {
-        _dataService.ItemService.DeleteItem(id);
+        await _dataService.ItemService.DeleteItem(id);
         return NoContent();
     }
 }
