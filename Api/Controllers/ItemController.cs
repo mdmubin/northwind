@@ -3,7 +3,6 @@ using Api.Models.Dto;
 using Api.Models.ErrorModels;
 using Api.Models.Requests;
 using Api.Services.DataServices;
-using Api.Services.Logging;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -12,14 +11,11 @@ namespace Api.Controllers;
 [Route("api/items/")]
 public class ItemController : ControllerBase
 {
-    private readonly ILogService _logger;
-
     private readonly IDataServiceManager _dataService;
 
-    public ItemController(IDataServiceManager dataService, ILogService logger)
+    public ItemController(IDataServiceManager dataService)
     {
         _dataService = dataService;
-        _logger = logger;
     }
 
 
