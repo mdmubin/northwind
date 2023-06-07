@@ -1,4 +1,5 @@
 ﻿using Api.Entities;
+using Api.Models.Requests;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Data.Repositories;
@@ -10,11 +11,12 @@ public class ItemRepository : BaseRepository<Item>
     {
     }
 
-    public async Task<IEnumerable<Item>> GetAllItemsAsync(bool trackChanges)
+    public async Task<PagedList<Item>> GetAllItemsAsync(PageSizeRequest sizeRequest, bool trackChanges)
     {
-        return await FindAll(trackChanges)
-            .OrderBy(i => i.Name)
-            .ToListAsync();
+        var items = FindAll(trackChanges)
+            .OrderBy(i => i.Name);
+
+        return await PagedList<Item>.ToPagedList(items, sizeRequest.PageNumber, sizeRequest.PageSize);
     }
 
     public async Task<Item> GetItemAsync(Guid id, bool trackChanges)

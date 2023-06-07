@@ -2,6 +2,7 @@
 using Api.Entities;
 using Api.Models.Dto;
 using Api.Models.ErrorModels;
+using Api.Models.Requests;
 using Api.Services.Logging;
 using AutoMapper;
 
@@ -20,11 +21,12 @@ public sealed class ItemService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<ItemResultDto>> GetAllItemsAsync(bool trackChanges = true)
+    public async Task<(IEnumerable<ItemResultDto> items, MetaData metaData)> GetAllItemsAsync(
+        PageSizeRequest sizeRequest, bool trackChanges = true)
     {
-        var items = await _repository.Items.GetAllItemsAsync(trackChanges);
+        var items = await _repository.Items.GetAllItemsAsync(sizeRequest, trackChanges);
         var itemsResult = _mapper.Map<IEnumerable<ItemResultDto>>(items);
-        return itemsResult;
+        return (itemsResult, items.MetaData);
     }
 
     public async Task<ItemResultDto> GetItemAsync(Guid id, bool trackChanges = true)

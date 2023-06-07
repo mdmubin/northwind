@@ -1,5 +1,8 @@
-﻿using Api.Models.Dto;
+﻿using System.Text.Json;
+using Api.Models;
+using Api.Models.Dto;
 using Api.Models.ErrorModels;
+using Api.Models.Requests;
 using Api.Services.DataServices;
 using Api.Services.Logging;
 using Microsoft.AspNetCore.Mvc;
@@ -23,10 +26,12 @@ public class ItemController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(List<ItemResultDto>), StatusCodes.Status200OK)]
-    public async Task<ActionResult> GetItems()
+    public async Task<ActionResult> GetItems([FromQuery] PageSizeRequest sizeRequest)
     {
-        var items = await _dataService.ItemService.GetAllItemsAsync();
-        return Ok(items);
+        var items = await _dataService.ItemService.GetAllItemsAsync(sizeRequest);
+
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(items.metaData));
+        return Ok(items.items);
     }
 
 
