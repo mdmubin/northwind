@@ -50,3 +50,20 @@ public class ItemRequestDto
 
     public Guid SellerId { get; set; }
 }
+
+public class ItemUpdateDto
+{
+    public string Name { get; set; }
+
+    public string DisplayImage { get; set; } = string.Empty;
+
+    public string Description { get; set; } = string.Empty;
+
+    public string Manufacturer { get; set; } = string.Empty;
+
+    public double Price { get; set; }
+    
+    public double PercentDiscount { get; set; } = 0.0;
+
+    public int AmountInStock { get; set; } = 0;
+}

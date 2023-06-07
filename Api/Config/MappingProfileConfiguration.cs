@@ -11,8 +11,10 @@ public class MappingProfileConfiguration : Profile
         CreateMap<Item, ItemResultDto>()
             .ForMember(res => res.SellerId, opt => opt.MapFrom(src => src.UserId));
 
-        // CreateMap<ItemCreationDto, Item>()
-        //     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
-        //     .ForMember(dest => dest.Seller, opt => opt.MapFrom<ItemResolver>());
+        CreateMap<ItemRequestDto, Item>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
+            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.SellerId));
+
+        CreateMap<ItemUpdateDto, Item>();
     }
 }
