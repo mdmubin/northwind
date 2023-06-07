@@ -1,6 +1,7 @@
 using Api.Config;
 using Api.Data;
 using Api.Services;
+using Api.Services.DataServices;
 using Api.Services.Logging;
 using Microsoft.EntityFrameworkCore;
 using NLog;
@@ -24,7 +25,7 @@ builder.Services.AddDbContext<NorthwindContext>(opt =>
 
 builder.Services.ConfigureDataServices();
 
-builder.Services.AddAutoMapper(typeof(MappingProfileConfiguration));
+builder.Services.AddAutoMapper(typeof(DataMapperService));
 
 builder.Services.AddControllers();
 
