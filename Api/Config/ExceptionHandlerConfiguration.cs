@@ -21,6 +21,7 @@ public static class ExceptionHandlerConfiguration
                     context.Response.StatusCode = contextFeatures.Error switch
                     {
                         NotFoundError => StatusCodes.Status404NotFound,
+                        BadRequestError => StatusCodes.Status400BadRequest,
                         _ => StatusCodes.Status500InternalServerError
                     };
 
