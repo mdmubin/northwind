@@ -16,6 +16,9 @@ public class Review
     [StringLength(500)]
     public string Content { get; set; } = string.Empty;
 
+    [Required]
+    public DateTime DateTimeReviewed { get; set; }
+
     //
 
     [ForeignKey(nameof(Item))]
