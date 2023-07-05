@@ -1,4 +1,3 @@
-using Api.Config;
 using Api.Data;
 using Api.Services;
 using Api.Services.DataServices;
@@ -45,7 +44,7 @@ if (app.Environment.IsDevelopment())
 }
 
 var logger = app.Services.GetRequiredService<ILogService>();
-app.ConfigureErrorHandler(logger);
+app.ConfigureExceptionHandler(logger);
 
 // HTTP -> HTTPS
 // app.UseHttpsRedirection();

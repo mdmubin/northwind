@@ -3,11 +3,11 @@ using Api.Models.ErrorModels;
 using Api.Services.Logging;
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace Api.Config;
+namespace Api.Services;
 
-public static class ExceptionHandlerConfiguration
+public static class ExceptionHandlerService
 {
-    public static void ConfigureErrorHandler(this WebApplication app, ILogService logger)
+    public static void ConfigureExceptionHandler(this WebApplication app, ILogService logger)
     {
         app.UseExceptionHandler(errorHandler =>
         {
