@@ -58,6 +58,34 @@ public class ItemController : ControllerBase
         return CreatedAtAction(nameof(GetItemById), new { id = itemResult.Id }, itemResult);
     }
 
+    [HttpGet("{id:guid}/reviews")]
+    public async Task<ActionResult> GetReviews(Guid itemId, [FromQuery] PageSizeRequest sizeRequest)
+    {
+        var reviews = await _dataService.ItemService.GetItemReviews(itemId, sizeRequest);
+
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(reviews.metaData));
+        return Ok(reviews.reviews);
+    }
+
+
+    [HttpPost("{id:guid}/reviews")]
+    public async Task<ActionResult> SubmitReview(Guid id, ReviewRequestDto review)
+    {
+        if (review == null)
+        {
+            throw new BadRequestError("Invalid request for review submission.");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return UnprocessableEntity(ModelState);
+        }
+
+        var reviewResult = await _dataService.ItemService.CreateItemReviewAsync(review);
+
+        return CreatedAtAction(nameof(GetReviews), new { id }, reviewResult);
+    }
+
 
     [HttpPatch("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
