@@ -41,6 +41,33 @@ public sealed class ItemService
         return itemResult;
     }
 
+    public async Task<(IEnumerable<ReviewResultDto> reviews, MetaData metaData)> GetItemReviews(Guid itemId,
+        PageSizeRequest sizeRequest,
+        bool trackChanges = true)
+    {
+        var item = await _repository.Items.GetItemAsync(itemId, trackChanges);
+        if (item == null)
+        {
+            throw new NotFoundError($"Item not found. No item with id = {itemId}");
+        }
+
+        var reviews = await _repository.Reviews.GetAllItemReviewsAsync(itemId, sizeRequest, trackChanges);
+        var reviewResult = _mapper.Map<IEnumerable<ReviewResultDto>>(reviews);
+
+        return (reviewResult, reviews.MetaData);
+    }
+
+    public async Task<ReviewResultDto> CreateItemReviewAsync(ReviewRequestDto request)
+    {
+        var newReview = _mapper.Map<Review>(request);
+
+        _repository.Reviews.Create(newReview);
+        await _repository.SaveChangesAsync();
+
+        var resReview = _mapper.Map<ReviewResultDto>(newReview);
+        return resReview;
+    }
+
     public async Task<ItemResultDto> CreateItemAsync(ItemRequestDto request)
     {
         var newItem = _mapper.Map<Item>(request);

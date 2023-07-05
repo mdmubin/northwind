@@ -3,4 +3,5 @@
 public interface IDataServiceManager
 {
     public ItemService ItemService { get; }
+    public OrderService OrderService { get; }
 }

@@ -8,10 +8,13 @@ public class DataServiceManager : IDataServiceManager
 {
     private readonly Lazy<ItemService> _itemService;
 
+    private readonly Lazy<OrderService> _orderService;
+
     public DataServiceManager(IRepositoryManager repositoryManager, IMapper mapper, ILogService logger)
     {
         _itemService = new Lazy<ItemService>(new ItemService(repositoryManager, mapper, logger));
     }
 
     public ItemService ItemService => _itemService.Value;
+    public OrderService OrderService => _orderService.Value;
 }
