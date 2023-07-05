@@ -29,6 +29,11 @@ public class BaseRepository<T> : IRepository<T>
         _context.Set<T>().Add(entity);
     }
 
+    public void CreateAll(IEnumerable<T> entities)
+    {
+        _context.Set<T>().AddRange(entities);
+    }
+
     public void Update(T entity)
     {
         _context.Set<T>().Update(entity);
@@ -37,5 +42,10 @@ public class BaseRepository<T> : IRepository<T>
     public void Delete(T entity)
     {
         _context.Set<T>().Remove(entity);
+    }
+
+    public void DeleteAll(IEnumerable<T> entities)
+    {
+        _context.Set<T>().RemoveRange(entities);
     }
 }

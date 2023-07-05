@@ -3,9 +3,9 @@
 public interface IRepositoryManager
 {
     ItemRepository Items { get; }
-
-    // add other repository items here
-
+    OrderRepository Orders { get; }
+    OrderEntryRepository OrderEntries { get; }
+    ReviewRepository Reviews { get; }
 
     public Task SaveChangesAsync();
 }
