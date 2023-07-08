@@ -8,17 +8,17 @@ import {
   IconButton,
   Typography
 } from '@mui/material';
-import CartIcon  from '@mui/icons-material/ShoppingCart';
+import CartIcon from '@mui/icons-material/ShoppingCart';
 import ShareIcon from '@mui/icons-material/Share';
 
 import { red } from '@mui/material/colors';
 
-import testImage from "../assets/ps5.jpg";
+import testImage from "../../assets/ps5.jpg";
 
 
 function ItemCard() {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 400, marginTop: 5 }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">

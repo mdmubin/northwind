@@ -1,13 +1,17 @@
-import { CssBaseline } from "@mui/material"
+import { CssBaseline, Grid, Stack } from "@mui/material"
+
 import Navbar from "./components/Navbar";
-import ItemCard from "./components/ItemCard";
+
 
 export default function App() {
   return (
     <>
       <CssBaseline>
-        <Navbar />
-        <ItemCard />
+        <Stack>
+          <Navbar />
+          <Grid container spacing={3} padding={3} justifyContent={"center"}>
+          </Grid>
+        </Stack>
       </CssBaseline>
     </>
   );
