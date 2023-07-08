@@ -49,6 +49,8 @@ app.ConfigureExceptionHandler(logger);
 // HTTP -> HTTPS
 // app.UseHttpsRedirection();
 
+app.UseCors("CorsPolicy");
+
 // Disabled for now
 // app.UseAuthorization();
 
