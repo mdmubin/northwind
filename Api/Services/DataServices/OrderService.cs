@@ -3,6 +3,7 @@ using Api.Entities;
 using Api.Models.Dto;
 using Api.Models.ErrorModels;
 using Api.Models.Requests;
+using Api.Services.Logging;
 using AutoMapper;
 
 namespace Api.Services.DataServices;
@@ -13,10 +14,13 @@ public sealed class OrderService
 
     private readonly IRepositoryManager _repository;
 
-    public OrderService(IRepositoryManager repository, IMapper mapper)
+    private readonly ILogService _logger;
+
+    public OrderService(IRepositoryManager repository, IMapper mapper, ILogService logger)
     {
         _mapper = mapper;
         _repository = repository;
+        _logger = logger;
     }
 
     public async Task<(IEnumerable<OrderResultDto> orders, MetaData metaData)> GetUserOrdersAsync(Guid userId,
@@ -54,7 +58,7 @@ public sealed class OrderService
         {
             throw new NotFoundError($"Could not find any order entries for order id = {id}");
         }
-        
+
         var order = await _repository.Orders.GetOrderAsync(id, true);
         if (order == null)
         {
