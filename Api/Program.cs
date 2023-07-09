@@ -24,6 +24,11 @@ builder.Services.AddDbContext<NorthwindContext>(opt =>
 
 builder.Services.ConfigureDataServices();
 
+var jwtConfig = builder.Configuration.GetSection("JwtConfiguration");
+
+builder.Services.ConfigureJwtService(jwtConfig);
+builder.Services.ConfigureAuthServices();
+
 builder.Services.AddAutoMapper(typeof(DataMapperService));
 
 builder.Services.AddControllers();
@@ -52,6 +57,7 @@ app.ConfigureExceptionHandler(logger);
 app.UseCors("CorsPolicy");
 
 // Disabled for now
+app.UseAuthentication();
 // app.UseAuthorization();
 
 app.MapControllers();

@@ -1,4 +1,10 @@
-﻿using Api.Data.Repositories;
+﻿using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using Api.Data;
+using Api.Data.Repositories;
+using Api.Entities;
 using Api.Services.DataServices;
 
 namespace Api.Services;
@@ -40,5 +46,40 @@ public static class ServiceConfigurations
     {
         services.AddScoped<IRepositoryManager, RepositoryManager>();
         services.AddScoped<IDataServiceManager, DataServiceManager>();
+    }
+
+    public static void ConfigureAuthServices(this IServiceCollection services)
+    {
+        services.AddIdentity<User, UserRole>(opt =>
+            {
+                opt.Password.RequireDigit = true;
+                opt.Password.RequiredLength = 8;
+                opt.Password.RequireLowercase = true;
+                opt.User.RequireUniqueEmail = true;
+                opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
+            }).AddEntityFrameworkStores<NorthwindContext>()
+            .AddDefaultTokenProviders();
+    }
+
+    public static void ConfigureJwtService(this IServiceCollection services, IConfiguration jwtConfig)
+    {
+        services.AddAuthentication(opt =>
+        {
+            opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(opt =>
+        {
+            opt.TokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+
+                ValidIssuer = jwtConfig["ValidIssuer"],
+                ValidAudience = jwtConfig["ValidAudience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig["JwtSecret"]!))
+            };
+        });
     }
 }
