@@ -11,6 +11,7 @@ public class DataMapperService : Profile
         CreateItemMap();
         CreateOrderMaps();
         CreateReviewMaps();
+        CreateUserMaps();
     }
 
     /// <summary>
@@ -53,5 +54,13 @@ public class DataMapperService : Profile
             .ForMember(res => res.DateTimeReviewed, opt => opt.MapFrom(_ => DateTime.Now));
 
         CreateMap<Review, ReviewResultDto>();
+    }
+
+    /// <summary>
+    /// Create mappings for models and DTOs related to User and UserRoles
+    /// </summary>
+    private void CreateUserMaps()
+    {
+        CreateMap<UserCreationDto, User>();
     }
 }
