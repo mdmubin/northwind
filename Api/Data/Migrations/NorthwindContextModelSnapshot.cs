@@ -120,6 +120,9 @@ namespace Api.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
+                    b.Property<DateTime>("DateTimeReviewed")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<Guid>("ItemId")
                         .HasColumnType("char(36)");
 
@@ -243,31 +246,31 @@ namespace Api.Data.Migrations
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("UserRole", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("840d2f8d-1f18-46a4-b890-d1db3f3ddbc6"),
+                            Id = new Guid("4d6204d2-c393-4c92-9247-7283d0b84af7"),
                             Name = "Administrator",
                             NormalizedName = "admin"
                         },
                         new
                         {
-                            Id = new Guid("53ff2727-f6f4-415c-b78d-dc617df1202b"),
-                            Name = "Content Moderator",
+                            Id = new Guid("1e6e5f3f-e1ea-4e65-8aa0-d75562a5a7f1"),
+                            Name = "ContentModerator",
                             NormalizedName = "mod"
                         },
                         new
                         {
-                            Id = new Guid("3007c564-5a0d-420d-932e-3802d41870cf"),
-                            Name = "Registered User",
+                            Id = new Guid("adfdedf8-bf30-4810-ae0f-5581bf980e1b"),
+                            Name = "RegisteredUser",
                             NormalizedName = "user"
                         },
                         new
                         {
-                            Id = new Guid("5bb218df-efa0-48e0-bbfc-6b34cdb5cb09"),
-                            Name = "Unregistered User",
+                            Id = new Guid("7220beb7-1cbb-4847-86c0-b52bccb79b64"),
+                            Name = "UnregisteredUser",
                             NormalizedName = "visitor"
                         });
                 });

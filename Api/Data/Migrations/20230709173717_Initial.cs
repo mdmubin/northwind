@@ -18,7 +18,7 @@ namespace Api.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Roles",
+                name: "UserRole",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
@@ -28,7 +28,7 @@ namespace Api.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
+                    table.PrimaryKey("PK_UserRole", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -81,9 +81,9 @@ namespace Api.Data.Migrations
                 {
                     table.PrimaryKey("PK_RoleClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RoleClaims_Roles_RoleId",
+                        name: "FK_RoleClaims_UserRole_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "Roles",
+                        principalTable: "UserRole",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -191,9 +191,9 @@ namespace Api.Data.Migrations
                 {
                     table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_UserRoles_Roles_RoleId",
+                        name: "FK_UserRoles_UserRole_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "Roles",
+                        principalTable: "UserRole",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -233,6 +233,7 @@ namespace Api.Data.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true),
+                    DateTimeReviewed = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ItemId = table.Column<Guid>(type: "char(36)", nullable: false),
                     UserId = table.Column<Guid>(type: "char(36)", nullable: false)
                 },
@@ -282,14 +283,14 @@ namespace Api.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.InsertData(
-                table: "Roles",
+                table: "UserRole",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("3007c564-5a0d-420d-932e-3802d41870cf"), null, "Registered User", "user" },
-                    { new Guid("53ff2727-f6f4-415c-b78d-dc617df1202b"), null, "Content Moderator", "mod" },
-                    { new Guid("5bb218df-efa0-48e0-bbfc-6b34cdb5cb09"), null, "Unregistered User", "visitor" },
-                    { new Guid("840d2f8d-1f18-46a4-b890-d1db3f3ddbc6"), null, "Administrator", "admin" }
+                    { new Guid("1e6e5f3f-e1ea-4e65-8aa0-d75562a5a7f1"), null, "ContentModerator", "mod" },
+                    { new Guid("4d6204d2-c393-4c92-9247-7283d0b84af7"), null, "Administrator", "admin" },
+                    { new Guid("7220beb7-1cbb-4847-86c0-b52bccb79b64"), null, "UnregisteredUser", "visitor" },
+                    { new Guid("adfdedf8-bf30-4810-ae0f-5581bf980e1b"), null, "RegisteredUser", "user" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -328,12 +329,6 @@ namespace Api.Data.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "RoleNameIndex",
-                table: "Roles",
-                column: "NormalizedName",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",
                 table: "UserClaims",
                 column: "UserId");
@@ -342,6 +337,12 @@ namespace Api.Data.Migrations
                 name: "IX_UserLogins_UserId",
                 table: "UserLogins",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "UserRole",
+                column: "NormalizedName",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",
@@ -391,7 +392,7 @@ namespace Api.Data.Migrations
                 name: "Items");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "UserRole");
 
             migrationBuilder.DropTable(
                 name: "Users");
