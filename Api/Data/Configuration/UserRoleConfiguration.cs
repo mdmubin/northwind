@@ -10,10 +10,10 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
     {
         builder.ToTable("UserRole").HasData(new List<UserRole>()
         {
-            new() { Id = Guid.NewGuid(), Name = "Administrator"    , NormalizedName = "admin"   },
-            new() { Id = Guid.NewGuid(), Name = "Content Moderator", NormalizedName = "mod"     },
-            new() { Id = Guid.NewGuid(), Name = "Registered User"  , NormalizedName = "user"    },
-            new() { Id = Guid.NewGuid(), Name = "Unregistered User", NormalizedName = "visitor" },
+            new() { Id = Guid.NewGuid(), Name = "Administrator"   , NormalizedName = "admin"   },
+            new() { Id = Guid.NewGuid(), Name = "ContentModerator", NormalizedName = "mod"     },
+            new() { Id = Guid.NewGuid(), Name = "RegisteredUser"  , NormalizedName = "user"    },
+            new() { Id = Guid.NewGuid(), Name = "UnregisteredUser", NormalizedName = "visitor" },
         });
     }
 }
