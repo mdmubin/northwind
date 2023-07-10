@@ -19,7 +19,7 @@ public class DataServiceManager : IDataServiceManager
     {
         _itemService = new Lazy<ItemService>(new ItemService(repositoryManager, mapper, logger));
         _orderService = new Lazy<OrderService>(new OrderService(repositoryManager, mapper, logger));
-        _authService = new Lazy<AuthService>(new AuthService(repositoryManager, userManager, mapper, logger, appConfig));
+        _authService = new Lazy<AuthService>(new AuthService(userManager, mapper, logger, appConfig));
     }
 
     public ItemService ItemService => _itemService.Value;

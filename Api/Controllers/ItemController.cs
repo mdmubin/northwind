@@ -3,6 +3,7 @@ using Api.Models.Dto;
 using Api.Models.ErrorModels;
 using Api.Models.Requests;
 using Api.Services.DataServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -19,6 +20,7 @@ public class ItemController : ControllerBase
     }
 
 
+    [AllowAnonymous]
     [HttpGet]
     [ProducesResponseType(typeof(List<ItemResultDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult> GetItems([FromQuery] PageSizeRequest sizeRequest)
@@ -30,6 +32,7 @@ public class ItemController : ControllerBase
     }
 
 
+    [AllowAnonymous]
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(ItemResultDto), StatusCodes.Status200OK)]
     public async Task<ActionResult> GetItemById(Guid id)
@@ -39,6 +42,7 @@ public class ItemController : ControllerBase
     }
 
 
+    [Authorize(Roles = "user")]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult> CreateItem(ItemRequestDto newItem)
@@ -58,16 +62,18 @@ public class ItemController : ControllerBase
         return CreatedAtAction(nameof(GetItemById), new { id = itemResult.Id }, itemResult);
     }
 
+    [AllowAnonymous]
     [HttpGet("{id:guid}/reviews")]
-    public async Task<ActionResult> GetReviews(Guid itemId, [FromQuery] PageSizeRequest sizeRequest)
+    public async Task<ActionResult> GetReviews(Guid id, [FromQuery] PageSizeRequest sizeRequest)
     {
-        var reviews = await _dataService.ItemService.GetItemReviews(itemId, sizeRequest);
+        var reviews = await _dataService.ItemService.GetItemReviews(id, sizeRequest);
 
         Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(reviews.metaData));
         return Ok(reviews.reviews);
     }
 
 
+    [Authorize(Roles = "user")]
     [HttpPost("{id:guid}/reviews")]
     public async Task<ActionResult> SubmitReview(Guid id, ReviewRequestDto review)
     {
@@ -87,6 +93,7 @@ public class ItemController : ControllerBase
     }
 
 
+    [Authorize(Roles = "user,admin")]
     [HttpPatch("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<ActionResult> UpdateItem(Guid id, ItemUpdateDto item)
@@ -107,6 +114,7 @@ public class ItemController : ControllerBase
     }
 
 
+    [Authorize(Roles = "admin")]
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteItem(Guid id)

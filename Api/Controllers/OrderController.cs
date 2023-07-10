@@ -1,6 +1,7 @@
 ﻿using Api.Models.Dto;
 using Api.Models.ErrorModels;
 using Api.Services.DataServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -16,6 +17,7 @@ public class OrderController : ControllerBase
         _dataService = dataService;
     }
 
+    [Authorize(Roles = "user,admin")]
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(OrderResultDto), StatusCodes.Status200OK)]
     public async Task<ActionResult> GetOrderById(Guid id)
@@ -25,6 +27,7 @@ public class OrderController : ControllerBase
     }
 
 
+    [Authorize(Roles = "user")]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult> CreateOrder(OrderRequestDto request)
@@ -45,6 +48,7 @@ public class OrderController : ControllerBase
     }
 
 
+    [Authorize(Roles = "admin")]
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteOrder(Guid id)
