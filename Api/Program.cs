@@ -3,6 +3,7 @@ using Api.Services;
 using Api.Services.DataServices;
 using Api.Services.Logging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using NLog;
 
 // load log configuration
@@ -36,7 +37,29 @@ builder.Services.AddControllers();
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+    // added configuration in swagger to allow testing with jwt tokens
+    builder.Services.AddSwaggerGen(opt =>
+    {
+        opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+        {
+            In = ParameterLocation.Header,
+            Description = "Place JWT here with bearer",
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer"
+        });
+        opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" },
+                    Name = "Bearer",
+                },
+                new List<string>()
+            }
+        });
+    });
 }
 
 
