@@ -48,7 +48,7 @@ public static class ServiceConfigurations
         services.AddScoped<IDataServiceManager, DataServiceManager>();
     }
 
-    public static void ConfigureAuthServices(this IServiceCollection services)
+    public static void ConfigureIdentity(this IServiceCollection services)
     {
         services.AddIdentity<User, UserRole>(opt =>
             {

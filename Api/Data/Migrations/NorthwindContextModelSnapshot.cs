@@ -200,6 +200,12 @@ namespace Api.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("RefreshTokenExpireTime")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");
 
@@ -251,25 +257,25 @@ namespace Api.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4d6204d2-c393-4c92-9247-7283d0b84af7"),
+                            Id = new Guid("22514f1e-f32d-4699-af26-b545b3fe25a3"),
                             Name = "Administrator",
                             NormalizedName = "admin"
                         },
                         new
                         {
-                            Id = new Guid("1e6e5f3f-e1ea-4e65-8aa0-d75562a5a7f1"),
+                            Id = new Guid("6f221b1e-0a41-42ec-8080-50d07ad46c46"),
                             Name = "ContentModerator",
                             NormalizedName = "mod"
                         },
                         new
                         {
-                            Id = new Guid("adfdedf8-bf30-4810-ae0f-5581bf980e1b"),
+                            Id = new Guid("2fee7bb3-e0d4-4506-9137-b26d695be158"),
                             Name = "RegisteredUser",
                             NormalizedName = "user"
                         },
                         new
                         {
-                            Id = new Guid("7220beb7-1cbb-4847-86c0-b52bccb79b64"),
+                            Id = new Guid("8aca6c23-dd04-4df0-883d-da2a9635cc05"),
                             Name = "UnregisteredUser",
                             NormalizedName = "visitor"
                         });

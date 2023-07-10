@@ -1,7 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Api.Data.Repositories;
 using Api.Entities;
 using Api.Models.Dto;
 using Api.Services.Logging;
@@ -15,8 +14,6 @@ public class AuthService
 {
     private readonly IMapper _mapper;
 
-    private readonly IRepositoryManager _repository;
-
     private readonly ILogService _logger;
 
     private readonly UserManager<User> _userManager;
@@ -25,10 +22,9 @@ public class AuthService
 
     private User _user;
 
-    public AuthService(IRepositoryManager repository, UserManager<User> userManager, IMapper mapper, ILogService logger,
+    public AuthService(UserManager<User> userManager, IMapper mapper, ILogService logger,
         IConfiguration appConfig)
     {
-        _repository = repository;
         _userManager = userManager;
         _mapper = mapper;
         _logger = logger;
@@ -42,7 +38,7 @@ public class AuthService
         var result = await _userManager.CreateAsync(user, userForm.Password);
         if (result.Succeeded)
         {
-            await _userManager.AddToRoleAsync(user, "Registered User");
+            await _userManager.AddToRoleAsync(user, "user"); // requires the normalized name
         }
 
         return result;
@@ -74,12 +70,10 @@ public class AuthService
             issuer: jwtConfig["validIssuer"],
             audience: jwtConfig["validAudience"],
             claims: claims,
-            expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtConfig["expires"])),
+            expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtConfig["ExpiresAfter"])),
             signingCredentials: key
         );
 
         return new JwtSecurityTokenHandler().WriteToken(tokenOpt);
     }
-    
-    
 }

@@ -27,7 +27,7 @@ builder.Services.ConfigureDataServices();
 var jwtConfig = builder.Configuration.GetSection("JwtConfiguration");
 
 builder.Services.ConfigureJwtService(jwtConfig);
-builder.Services.ConfigureAuthServices();
+builder.Services.ConfigureIdentity();
 
 builder.Services.AddAutoMapper(typeof(DataMapperService));
 
@@ -52,13 +52,13 @@ var logger = app.Services.GetRequiredService<ILogService>();
 app.ConfigureExceptionHandler(logger);
 
 // HTTP -> HTTPS
-// app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseCors("CorsPolicy");
 
 // Disabled for now
 app.UseAuthentication();
-// app.UseAuthorization();
+app.UseAuthorization();
 
 app.MapControllers();
 
