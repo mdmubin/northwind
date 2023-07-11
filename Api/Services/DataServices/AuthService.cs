@@ -44,11 +44,11 @@ public class AuthService
         return result;
     }
 
-    public async Task<bool> ValidateUser(UserAuthenticationDto authReq)
+    public async Task<(bool valid, string userId)> ValidateUser(UserAuthenticationDto authReq)
     {
         _user = await _userManager.FindByNameAsync(authReq.UserName);
         var validUser = _user != null && await _userManager.CheckPasswordAsync(_user, authReq.Password);
-        return validUser;
+        return (validUser, validUser ? _user.Id.ToString() : string.Empty);
     }
 
     public async Task<string> GenerateToken()

@@ -42,9 +42,10 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult> Authenticate([FromBody] UserAuthenticationDto authReq)
     {
-        if (await _dataService.AuthService.ValidateUser(authReq))
+        var result = await _dataService.AuthService.ValidateUser(authReq);
+        if (result.valid)
         {
-            return Ok(new { Token = await _dataService.AuthService.GenerateToken() });
+            return Ok(new { Token = await _dataService.AuthService.GenerateToken(), UserId = result.userId });
         }
 
         return Unauthorized();
